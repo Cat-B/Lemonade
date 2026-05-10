@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  projects.html — All Projects (Recipe Book Layout)
+  ============================================================================
+  This page is the "see all projects" gallery. Visually it's styled to look
+  like an open recipe book: a soft cream page with a darker spine shadow
+  running down the center, and each project card tilts slightly on hover
+  like an index card pinned to a corkboard.
+
+  All project content comes from the PROJECTS array inside script.js. We
+  reuse the same data so the carousel on index.html and this gallery never
+  drift out of sync. When you add a new project to script.js it shows up in
+  both places automatically.
+  ============================================================================
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Projects · Catherine Boss</title>
+  <meta name="description" content="The full recipe book — every engineering project Catherine has worked on." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body class="page-recipebook">
+
+  <!-- Shared nav. Same markup as index.html so the JS handlers all
+       still work (hamburger, easter-egg wordmark click, etc.). The
+       hash links point back to index.html#section. -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="./index.html" id="wordmark" class="nav__wordmark" tabindex="0">
+        <span class="nav__wordmark-text">Catherine&nbsp;Boss</span>
+        <svg class="nav__wordmark-lemon" viewBox="0 0 24 24" aria-hidden="true">
+          <ellipse cx="12" cy="12" rx="9" ry="7" fill="#F9E784" stroke="#E0C547" stroke-width="1.2"/>
+          <path d="M5 13 Q12 9 19 13" stroke="#E0C547" stroke-width="1" fill="none"/>
+        </svg>
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a class="nav__link" href="./index.html#about">About</a></li>
+        <li><a class="nav__link" href="./index.html#projects">Projects</a></li>
+        <li><a class="nav__link" href="./index.html#experience">Experience</a></li>
+        <li><a class="nav__link" href="./index.html#contact">Contact</a></li>
+      </ul>
+      <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       RECIPE BOOK PAGE
+       The .recipebook wrapper provides:
+         • soft paper background
+         • centered spine shadow (CSS gradient)
+         • subtle page curl shadows on the outer edges
+       ============================================================ -->
+  <main class="recipebook">
+
+    <!-- Book header: title in a hand-set display font and a small "back
+         to the kitchen" link. -->
+    <header class="recipebook__header">
+      <a class="recipebook__back" href="./index.html">← Back to the kitchen</a>
+      <h1 class="recipebook__title">Catherine's Recipe Book</h1>
+      <p class="recipebook__sub">
+        A masonry of every project I've baked, soldered, sketched, and squeezed
+        my way through.
+      </p>
+    </header>
+
+    <!-- The actual page-spread. The CSS adds the spine gradient down the
+         middle, and the cards form a masonry grid that flows around it. -->
+    <section class="recipebook__spread">
+      <!-- Spine shadow lives in CSS as ::before of .recipebook__spread. -->
+      <ul class="recipebook__grid" id="recipebookGrid" role="list">
+        <!-- Recipe cards are injected by script.js. Each card looks like
+             a hand-pinned index card and tilts slightly on hover. -->
+      </ul>
+    </section>
+
+    <!-- A tiny illustrated lemon at the bottom of the page, just for fun.
+         Clicks count toward the lemon-counter easter egg. -->
+    <div class="recipebook__footer">
+      <img src="./img/lemon-decor.png" alt="" class="recipebook__lemon" data-lemon-counter loading="lazy" />
+      <p>That's the whole jar — for now.</p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p class="footer__line">Hand-stirred by Catherine Boss · &copy; 2026</p>
+  </footer>
+
+  <!-- Toast for easter-egg messages. -->
+  <div class="toast" id="toast" aria-live="polite"></div>
+
+  <!-- Same script.js powers this page. It detects which page it's on by
+       looking at <body class="page-recipebook"> and only renders the
+       recipe-book cards when that class is present. -->
+  <script src="./script.js" defer></script>
+</body>
+</html>
