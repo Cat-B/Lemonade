@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  pages/project-detail-template.html — Generic Project Detail Page
+  ============================================================================
+  Every project shares this same HTML page. The actual project content is
+  swapped in by script.js based on the ?id=N parameter in the URL.
+
+  Theme system:
+    Each project also has a "lemon dessert" theme assigned to it in
+    script.js (meringue, popsicle, lemon-tea, lemon-bar, lemon-tart, sorbet).
+    script.js adds a class like body.theme-meringue, and style.css picks up
+    that class to swap the accent color, the header illustration src, and
+    the decorative sidebar corner element.
+
+  Why a single template?  Two reasons:
+    1) When the layout needs a change, we only update one file.
+    2) GitHub Pages doesn't run a server, so we can't generate pages
+       dynamically. JS-on-load is the simplest static workaround.
+  ============================================================================
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project · Catherine Boss</title>
+  <!-- A generic description; script.js may overwrite the <title> with the
+       real project title once it loads. -->
+  <meta name="description" content="Details on one of Catherine Boss's engineering projects." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- style.css is up one directory because this file lives in /pages/. -->
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<!--
+  body has class "page-detail" so global CSS can target this layout, and
+  script.js will append a theme class like "theme-meringue" once it reads
+  the ?id=N parameter and looks up the project's theme.
+-->
+<body class="page-detail">
+
+  <!-- Shared nav. All hash/anchor links point back to /index.html. -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="../index.html" id="wordmark" class="nav__wordmark" tabindex="0">
+        <span class="nav__wordmark-text">Catherine&nbsp;Boss</span>
+        <svg class="nav__wordmark-lemon" viewBox="0 0 24 24" aria-hidden="true">
+          <ellipse cx="12" cy="12" rx="9" ry="7" fill="#F9E784" stroke="#E0C547" stroke-width="1.2"/>
+          <path d="M5 13 Q12 9 19 13" stroke="#E0C547" stroke-width="1" fill="none"/>
+        </svg>
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a class="nav__link" href="../index.html#about">About</a></li>
+        <li><a class="nav__link" href="../index.html#projects">Projects</a></li>
+        <li><a class="nav__link" href="../index.html#experience">Experience</a></li>
+        <li><a class="nav__link" href="../index.html#contact">Contact</a></li>
+      </ul>
+      <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       PROJECT HERO BANNER
+       This is where the theme really shows. The theme's hero image
+       (./img/theme-meringue.png, etc.) sits behind the title block.
+       The image src is set by script.js from the THEMES mapping.
+       ============================================================ -->
+  <header class="detail-hero">
+    <!-- Theme illustration. data-theme-img is the hook script.js uses
+         to set src to the right theme illustration. -->
+    <img class="detail-hero__theme" alt="" data-theme-img loading="eager" />
+    <div class="detail-hero__inner">
+      <a class="detail-hero__back" href="../projects.html">← Back to all recipes</a>
+      <p class="detail-hero__eyebrow" data-project-date></p>
+      <h1 class="detail-hero__title" data-project-title>Loading...</h1>
+      <p class="detail-hero__tagline" data-project-short></p>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       MAIN CONTENT
+       Two columns on desktop: long-form content on the left, a small
+       sidebar on the right. The sidebar holds the date, tech stack,
+       optional PDF link, and a decorative theme corner (a tiny image
+       defined per theme).
+       ============================================================ -->
+  <main class="detail">
+
+    <article class="detail__article">
+      <!-- Optional PDF embed. script.js shows this only if the project
+           data has a pdfUrl field. -->
+      <section class="detail__pdf" data-pdf-section hidden>
+        <h2>Presentation Preview</h2>
+        <div class="detail__pdf-frame">
+          <iframe data-pdf-frame title="Project document" loading="lazy"></iframe>
+        </div>
+      </section>
+
+      <!-- Gallery. script.js builds the thumbnails and the big image. -->
+      <section class="detail__gallery" data-gallery-section>
+        <h2>Project Gallery</h2>
+        <div class="detail__gallery-main">
+          <img data-gallery-main alt="" />
+          <button class="detail__gallery-prev" data-gallery-prev aria-label="Previous image">‹</button>
+          <button class="detail__gallery-next" data-gallery-next aria-label="Next image">›</button>
+          <span class="detail__gallery-counter" data-gallery-counter></span>
+        </div>
+        <ul class="detail__gallery-thumbs" data-gallery-thumbs role="list"></ul>
+      </section>
+
+      <!-- Overview. -->
+      <section class="detail__block">
+        <h2>Overview</h2>
+        <p data-project-overview></p>
+      </section>
+
+      <!-- Long-form body. script.js renders one <p> per paragraph
+           inside this container. -->
+      <section class="detail__block">
+        <h2>Project Details</h2>
+        <div data-project-body></div>
+      </section>
+
+      <!-- Outcomes. -->
+      <section class="detail__block">
+        <h2>Outcomes &amp; Learning</h2>
+        <p data-project-outcomes></p>
+      </section>
+    </article>
+
+    <!-- Sidebar -->
+    <aside class="detail__aside">
+      <!-- The decorative theme corner. CSS uses the body theme class to
+           set its background image. -->
+      <span class="detail__corner" aria-hidden="true"></span>
+
+      <h3>Project Info</h3>
+      <dl class="detail__meta">
+        <dt>Date</dt>
+        <dd data-project-date-2></dd>
+        <dt>Tech &amp; Tools</dt>
+        <dd>
+          <ul class="detail__tags" data-project-tags></ul>
+        </dd>
+      </dl>
+
+      <!-- Optional document link. script.js shows this if pdfUrl exists. -->
+      <a class="lemon-btn lemon-btn--filled detail__doc-btn" data-doc-link href="#" target="_blank" rel="noopener noreferrer" hidden>
+        Open the document ↗
+      </a>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <p class="footer__line">Hand-stirred by Catherine Boss · &copy; 2026</p>
+  </footer>
+
+  <!-- Toast for easter-egg messages. -->
+  <div class="toast" id="toast" aria-live="polite"></div>
+
+  <!-- Detail page uses the same script.js. The script detects
+       <body class="page-detail">, reads ?id=N, looks up the project, and
+       fills in all the data-* hooks above. -->
+  <script src="../script.js" defer></script>
+</body>
+</html>
